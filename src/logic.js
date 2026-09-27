@@ -54,6 +54,9 @@ export async function generate(modelId, gratitude) {
     .replace(/^["'“]|["'”]$/g, "")
     .trim();
 
+  // Fall back to a deterministic, guaranteed-safe reflection whenever the
+  // model refused, replied empty, or rambled past a sane length — this keeps
+  // the response usable even if the on-device model produces a bad completion.
   const reflection = looksUnusable(text) ? FALLBACK(gratitude) : text;
   return { reflection };
 }
